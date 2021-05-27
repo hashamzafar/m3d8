@@ -86,7 +86,7 @@
 
 
 
-
+    
 
 
 
@@ -103,26 +103,23 @@
 
 
     <script>
-         const url = "https://striveschool-api.herokuapp.com/api/product/"
-        window.onload = () => {
-            
+           
+        window.onload = async () => {
+            const url = "https://striveschool-api.herokuapp.com/api/product/"
             const addProduct = document.getElementById("addProduct")
-        
-
        
-
-const get = async() => {
     try {
        const response = await fetch(url, {
            method: "GET",
            headers: {
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGFlNDE0YWNlYWY0ODAwMTVjOTE4NzAiLCJpYXQiOjE2MjIwMzI3MTQsImV4cCI6MTYyMzI0MjMxNH0.-5K8XCFP-8GPlg0t945KeE6P0WstxgVIbyjpAjqfw0w"
            }
-       })
+       }) 
        const products = await response.json()
+
        console.log(products)
-       if (events.length > 0) {
-            events.forEach((event) => {
+       if (products.length > 0) {
+            products.forEach((products) => {
               const listItem = document.createElement("li");
               listItem.classList.add(
                 "list-group-item",
@@ -131,16 +128,24 @@ const get = async() => {
               );
             
          
-              listItem.innerHTML = `<span>${event.name}</span><span class="badge badge-dark">${event.price}€</span>`
-         } 
-     }
+              listItem.innerHTML = `<img src="${products.imageUrl}" alt="" width= '80px'>
+              <span>${products.brand}</span>
+              <span class="badge badge-dark">${products.price}€</span>
+            </span><span>${products.description}</span>`
+              addProduct.appendChild(listItem)
+         } )
+        } else {
+            addProduct.innerHTML = `<div class="alert alert-info" role="alert">
+                                        No events planned yet!
+                                        </div>`;
+          }
     
     } catch (err) {
           console.log(err);
         }
         
       }   
-    }
+  
     
   
   

@@ -76,7 +76,7 @@
           <div class="col-md-6">
             <h2 class="mt-5 mb-3">Backoffice</h2>
   
-            <form onsubmit="handleSubmit(event)">
+            <form>
               <div class="form-group">
                 <label for="name">name</label>
                 <input
@@ -92,13 +92,13 @@
                 <textarea
                   id="description"
                   type="text"
-                  rows="6"
+                  rows="3"
                   class="form-control"
                   aria-describedby="event description"
                 ></textarea>
               </div>
               
-              </div>
+              
               <div class="form-group">
                 <label for="brand">brand</label>
                 <input
@@ -126,7 +126,9 @@
                   aria-describedby="ticket price"
                 />
              
-              <input type="submit" class="btn btn-primary" value="Submit" />
+            <button type='button' onclick='handleSubmit()' class = 'btn btn-danger mt-3'>submit</button>
+              
+             
             </form>
           </div>
         </div>
@@ -135,70 +137,61 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script>
          
-         const handleSubmit = async (event) => {
+        const handleSubmit = async (product) => {
             const url = "https://striveschool-api.herokuapp.com/api/product/";
-            event.preventDefault();
+            // product.preventDefault();
        
-            let name = document.getElementById("name").value;
+            
 
             const myEvent = {
-            name,
+            name :document.getElementById("name").value,
             description: document.getElementById("description").value,
             brand: document.getElementById("brand").value,
-            image: document.getElementById("image").value,
+            imageUrl: document.getElementById("imageUrl").value,
             price: document.getElementById("price").value,
             
 }
-        const post = async() => { //should have a "body" param
-            let body = {
-                "name": "app test3",  
-                "description": "somthing longer", 
-                "brand": "nokia", 
-                "imageUrl": "https://drop.ndtv.com/TECH/product_database/images/2152017124957PM_635_nokia_3310.jpeg?downsize=*:420&output-quality=80", 
-                "price": 100
-                }
-    console.log(JSON.stringify(body))
+        // const post = async() => { 
+        //     let body = {
+        //         "name": "app test3",  
+        //         "description": "somthing longer", 
+        //         "brand": "nokia", 
+        //         "imageUrl": "https://drop.ndtv.com/TECH/product_database/images/2152017124957PM_635_nokia_3310.jpeg?downsize=*:420&output-quality=80", 
+        //         "price": 100
+        //         }
+    console.log(JSON.stringify(myEvent))
         try {
-        await fetch(url, {
+       const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGFlNDE0YWNlYWY0ODAwMTVjOTE4NzAiLCJpYXQiOjE2MjIwMzI3MTQsImV4cCI6MTYyMzI0MjMxNH0.-5K8XCFP-8GPlg0t945KeE6P0WstxgVIbyjpAjqfw0w",
                 "Content-Type": "application/json"
                },
-            body: JSON.stringify(body)
+            body: JSON.stringify(myEvent)
         })
-    }
-
+    
+ 
+    console.log("RESPONSE", response);
+          if (response.ok) {
+         
+            const product = await response.json();
+            alert("Appointment created sccessfully with an id of " + product._id);
+          } else {
+            
+            console.log('')
+         
+            
+          }
 
      
         
-         catch (error) {
-        console.error(error)
-    } finally {
-        console.log("Finished")
-    }
+      }catch (error) {
+        alert(err.massage)
+    } 
 }
-}
+        
 
     </script>
 
